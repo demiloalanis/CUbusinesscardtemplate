@@ -64,7 +64,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #d89a64, #b06f3a);
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .avatar img {

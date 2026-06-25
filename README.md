@@ -1,50 +1,92 @@
 # Digital Business Card Template
 
-A clean, mobile-friendly digital business card (vCard) web page. Built with
-plain HTML, CSS, and JavaScript — no build step, no dependencies.
+A clean, mobile-friendly digital business card anyone can make their own by
+editing **one file**. Plain HTML/CSS/JS — no build step, no dependencies.
 
-![Card preview](preview.png)
+## Make your own in 3 steps
 
-## Features
+1. Open **`config.js`**.
+2. Change the values — name, title, bio, phone, email, website, color, and
+   social links. Every field is labeled with a comment.
+3. Save and refresh the page. Done.
 
-- Responsive card layout with an accent header
-- One-tap **Call** and **Email** actions
-- Contact details: phone, email, company, website
-- Social media links (LinkedIn included; add more easily)
-- **Download vCard** — generates a `.vcf` file the visitor can save to contacts
-- **Share This Page** — uses the native share sheet on mobile, falls back to
-  copying the link to the clipboard on desktop
-- Avatar with an automatic initials fallback if the photo is missing
-
-## Usage
-
-1. Open `index.html` in a browser, or host the three files
-   (`index.html`, `styles.css`, `script.js`) on any static host
-   (GitHub Pages, Netlify, etc.).
-2. Add a `photo.jpg` next to `index.html` for the profile picture.
-   If it's absent, the card shows the person's initials instead.
-
-## Customizing
-
-**Text content** lives in `index.html` — update the name, role, bio, and
-contact rows directly.
-
-**The vCard download and share** read from the `contact` object at the top of
-`script.js`. Keep it in sync with the HTML:
+You never need to touch the HTML or CSS.
 
 ```js
-const contact = {
+const profile = {
   firstName: "Lorena",
   lastName: "Roberts",
   title: "Sr. National Account Mgr.",
   company: "March Products Inc.",
-  phone: "+19096348698",        // E.164 format, used by tel: and vCard
+  bio: "Leading sales teams and managing national accounts…",
+  photo: "photo.jpg",          // image file or https:// link, or "" for initials
+  phone: "+19096348698",       // full format, used by the Call button & vCard
   phoneDisplay: "(909) 634-8698",
+  phoneLabel: "Mobile",
   email: "lroberts@marchproducts.com",
   website: "https://www.marchproducts.com",
-  linkedin: "https://www.linkedin.com/",
+  websiteDisplay: "www.marchproducts.com",
+  accent: "#c47d45",           // the card's main color — any CSS color
+  socials: [
+    { type: "linkedin", url: "https://www.linkedin.com/" },
+  ],
 };
 ```
 
-**Colors** are CSS variables at the top of `styles.css` — change `--accent`
-to re-theme the whole card.
+### Photo
+Drop an image next to `index.html` and set `photo: "your-photo.jpg"`.
+If the photo is missing or `photo: ""`, the card shows the person's initials.
+
+### Social links
+Add or remove lines in `socials`. Supported `type` values:
+`linkedin`, `twitter`, `instagram`, `facebook`, `youtube`, `github`,
+`tiktok`, `website`. Each renders with its proper icon and brand color.
+
+### Color
+Change `accent` to re-theme the whole card — header, buttons, avatar, and
+social section all follow it.
+
+## Features
+
+- One-tap **Call** and **Email**
+- Contact rows: phone, email, company, website (rows you leave blank are hidden)
+- Social media icons
+- **Download vCard** — saves the contact as a `.vcf` file
+- **Share This Page** — native share sheet on mobile, copies the link on desktop
+
+## Files
+
+| File | What it's for |
+|------|---------------|
+| `config.js` | **The only file you edit** — all the card's content |
+| `index.html` | Page skeleton (filled in from `config.js`) |
+| `app.js` | Renders the card and powers the buttons |
+| `styles.css` | Styling (theme color comes from `config.js`) |
+
+## Publishing it online
+
+Any static host works, with no configuration:
+
+- **Vercel** — vercel.com → Add New → Project → import the repo → Deploy
+- **Cloudflare Pages** — dash.cloudflare.com → Workers & Pages → Pages →
+  connect the repo → build command blank, output directory `/` → Deploy
+- **GitHub Pages** — repo Settings → Pages → deploy from `main`, root
+
+You'll get a shareable link like `https://your-name.vercel.app`.
+
+## Running it locally
+
+```bash
+python3 -m http.server 8000
+```
+Then open `http://localhost:8000`. (Opening `index.html` directly also works,
+though some browsers restrict the vCard download over `file://`.)
+
+## Making a card for multiple people
+
+Each person just needs their own `config.js`. Two easy patterns:
+
+- **Separate deploys** — give each person a copy of the folder with their own
+  `config.js`, deploy each to its own URL.
+- **One repo, many cards** — duplicate the folder per person
+  (`/lorena/`, `/marcus/`, …), each with its own `config.js`.
